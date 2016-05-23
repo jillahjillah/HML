@@ -62,7 +62,7 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
         setLayout(null);
 
         windowWidth = 950;
-        windowHeight = 500;
+        windowHeight = 550;
         setSize(windowWidth,windowHeight);
         setTitle("HML");
         setResizable(true);
