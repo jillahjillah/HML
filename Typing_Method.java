@@ -15,7 +15,7 @@ public class Typing_Method extends HML_Block {
 
 
         /**
-         * Currently not being used
+         * Not being used
          *
          HML_Block sso = new HML_Block("sso");
 
