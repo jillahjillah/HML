@@ -60,7 +60,7 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
         //Change how layout works, right now its all paced manually
         //Create tree structure the way
         setLayout(null);
-        windowWidth = 950;
+        windowWidth = 900;
         windowHeight = 500;
         setSize(windowWidth,windowHeight);
         setTitle("HML");
