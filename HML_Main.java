@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by samhollenbach on 5/19/16.
@@ -68,7 +69,10 @@ public class HML_Main extends JFrame implements ActionListener{
         setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        getContentPane().setBackground(Color.BLUE);
+
+        Color backgroundBlue = new Color(6,31,71);
+
+        getContentPane().setBackground(backgroundBlue);
 
 
         //File chooser button
@@ -145,9 +149,9 @@ public class HML_Main extends JFrame implements ActionListener{
             add(jl);
             add(tf);
 
-            if(f.getFieldName() == "gene-family"){
+            if(Objects.equals(f.getFieldName(), "gene-family")){
                 tf.setText("KIR");
-            }else if(f.getFieldName() == "allele-db"){
+            }else if(Objects.equals(f.getFieldName(), "allele-db")){
                 tf.setText("IPD-KIR");
             }
 
@@ -181,6 +185,8 @@ public class HML_Main extends JFrame implements ActionListener{
             }
         });
 
+        int filesWritten = 0;
+
         for(File f : foundFiles){
 
             String locus = f.getName().substring(6,f.getName().length()-4);
@@ -190,7 +196,6 @@ public class HML_Main extends JFrame implements ActionListener{
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
 
             String line = null;
             try {
@@ -202,11 +207,14 @@ public class HML_Main extends JFrame implements ActionListener{
                     String gl = line.substring(9);
 
                     writeFile(sample,date,locus,gl);
+                    filesWritten++;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        JOptionPane.showMessageDialog(this,filesWritten + " HML files created");
+
     }
 
     /**
