@@ -10,12 +10,11 @@ import java.util.ArrayList;
 /**
  * Created by samhollenbach on 5/19/16.
  */
-public class HML_Main extends JFrame implements KeyListener, ActionListener{
+public class HML_Main extends JFrame implements ActionListener{
 
     int windowWidth;
     int windowHeight;
 
-    File input;
     HML_Output out;
 
     PrintWriter writer;
@@ -47,7 +46,6 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
 
     public void run(){
         initialize();
-
     }
 
 
@@ -61,11 +59,10 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
         //Create tree structure the way
         setLayout(null);
 
-        //TEST TEST TEST TEST
 
 
-        windowWidth = 950;
-        windowHeight = 550;
+        windowWidth = 1000;
+        windowHeight = 675;
         setSize(windowWidth,windowHeight);
         setTitle("HML");
         setResizable(true);
@@ -74,28 +71,35 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
         getContentPane().setBackground(Color.BLUE);
 
 
-
+        //File chooser button
         fileChoose = new JButton("Choose Folder");
-        fileChoose.setBounds(600,100,100,100);
+        fileChoose.setBounds(700,10,100,100);
         fileChoose.addActionListener(this);
         add(fileChoose);
 
+        //File chooser
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //fc.setCurrentDirectory(new java.io.File("."));
         fc.setDialogTitle("Choose Directory");
         fc.setAcceptAllFileFilterUsed(false);
         fc.setControlButtonsAreShown(true);
 
+        //Directory label
         directory = new JLabel("No Directory Selected");
+        directory.setBounds(675,100,200,30);
+        directory.setForeground(Color.WHITE);
+        add(directory);
 
-
-        //addKeyListener(this);
-
+        //Print files button
         print = new JButton("Print Files");
-        print.setBounds(600,300,100,100);
+        print.setBounds(700,150,100,100);
         print.addActionListener(this);
         add(print);
         print.setVisible(true);
+
+        JLabel logo = new JLabel(new ImageIcon("logo/UCSF_sig_white_RGB.png"));
+        logo.setBounds(475,300,500,300);
+        add(logo);
 
 
         out = new HML_Output();
@@ -110,7 +114,7 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
     public void createTextFields(){
 
         int y = 0;
-        int x = 150;
+        int x = 100;
 
         for(HML_Field f : allFields){
             inputs.add(null);
@@ -118,25 +122,23 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
                 continue;
             }
 
-            String label;
-            //ugly code, FIXME: 5/20/16
+            //String label;
+            JLabel jl = new JLabel();
             if(f.isRequiredField()){
-                label = "*"+f.getFieldName();
-            }else{
-                label = f.getFieldName();
-            }
-            JLabel jl = new JLabel(label);
-            if(f.isRequiredField()){
+                jl.setText("*"+f.getFieldName() + " (" + f.getContainerBlock().getBlockName() + ")");
                 jl.setForeground(Color.RED);
+
             }else{
+                jl.setText(f.getFieldName() + " (" + f.getContainerBlock().getBlockName() + ")");
                 jl.setForeground(Color.WHITE);
             }
-            jl.setBounds(x+5,y,100,30);
+
+            jl.setBounds(x-50,y,200,30);
             JTextField tf = new JTextField();
             tf.setBounds(x,y+20,100,30);
             y+=60;
             if(y > windowHeight-50){
-                x += 150;
+                x += 200;
                 y = 0;
             }
             inputs.set(f.getID(),tf);
@@ -145,6 +147,8 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
 
             if(f.getFieldName() == "gene-family"){
                 tf.setText("KIR");
+            }else if(f.getFieldName() == "allele-db"){
+                tf.setText("IPD-KIR");
             }
 
 
@@ -153,7 +157,6 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
             System.out.println(f.getFieldName() + " - " + f.getID());
 
         }
-        //inputs.get(inputs.size()-1).setBounds(50,50,50,50);
 
 
     }
@@ -302,6 +305,7 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
             int returnVal = fc.showOpenDialog(HML_Main.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
+                directory.setText(file.getName());
                 workingDirectory = file.getAbsolutePath();
             } else {
 
@@ -316,17 +320,4 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
         }
     }
 
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }

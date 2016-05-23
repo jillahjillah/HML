@@ -20,6 +20,7 @@ public class HML_Block {
         fields.add(field);
         HML_Main.allFields.add(field);
         field.setID(HML_Main.idCounter++);
+        field.setContainerBlock(this);
     }
 
     public void addSubBlock(HML_Block block){

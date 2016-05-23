@@ -7,6 +7,7 @@ public class HML_Field {
     String name;
     String value = "";
     int id;
+    HML_Block container;
 
     public HML_Field(String name, boolean required) {
         this.name = name;
@@ -41,5 +42,13 @@ public class HML_Field {
 
     public void setID(int id) {
         this.id = id;
+    }
+
+    public void setContainerBlock(HML_Block container) {
+        this.container = container;
+    }
+
+    public HML_Block getContainerBlock() {
+        return container;
     }
 }
