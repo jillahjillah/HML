@@ -142,6 +142,12 @@ public class HML_Main extends JFrame implements KeyListener, ActionListener{
             inputs.set(f.getID(),tf);
             add(jl);
             add(tf);
+
+            if(f.getFieldName() == "gene-family"){
+                tf.setText("KIR");
+            }
+
+
             //jl.setVisible(true);
             tf.setVisible(true);
             System.out.println(f.getFieldName() + " - " + f.getID());
