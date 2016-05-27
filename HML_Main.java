@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -36,6 +37,8 @@ public class HML_Main extends JFrame implements ActionListener{
     JButton print;
     JLabel directory;
 
+    JLabel background;
+
     public static void main(String[] args) {
         HML_Main hml = new HML_Main();
         hml.run();
@@ -58,26 +61,34 @@ public class HML_Main extends JFrame implements ActionListener{
 
         //Change how layout works, right now its all paced manually
         //Create tree structure the way
+        setLayout(new BorderLayout());
+
+        setContentPane(new JLabel(new ImageIcon("images/HML_background.png")));
+
         setLayout(null);
 
 
 
+
         windowWidth = 1000;
-        windowHeight = 675;
+        windowHeight = 650;
         setSize(windowWidth,windowHeight);
         setTitle("HML");
-        setResizable(true);
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 
-        Color backgroundBlue = new Color(6,31,71);
 
-        getContentPane().setBackground(backgroundBlue);
+
+
+        //Color backgroundBlue = new Color(6,31,71);
+
+        //getContentPane().setBackground(backgroundBlue);
 
 
         //File chooser button
         fileChoose = new JButton("Choose Folder");
-        fileChoose.setBounds(700,10,100,100);
+        fileChoose.setBounds(740,10,110,40);
         fileChoose.addActionListener(this);
         add(fileChoose);
 
@@ -90,20 +101,20 @@ public class HML_Main extends JFrame implements ActionListener{
 
         //Directory label
         directory = new JLabel("No Directory Selected");
-        directory.setBounds(675,100,200,30);
+        directory.setBounds(725,100,200,30);
         directory.setForeground(Color.WHITE);
         add(directory);
 
         //Print files button
         print = new JButton("Print Files");
-        print.setBounds(700,150,100,100);
+        print.setBounds(740,60,110,40);
         print.addActionListener(this);
         add(print);
         print.setVisible(true);
 
-        JLabel logo = new JLabel(new ImageIcon("logo/UCSF_sig_white_RGB.png"));
+        /*JLabel logo = new JLabel(new ImageIcon("images/logo/UCSF_sig_white_RGB.png"));
         logo.setBounds(475,300,500,300);
-        add(logo);
+        add(logo);*/
 
 
         out = new HML_Output();
@@ -120,6 +131,7 @@ public class HML_Main extends JFrame implements ActionListener{
         int y = 0;
         int x = 100;
 
+        //Create text box for each field
         for(HML_Field f : allFields){
             inputs.add(null);
             if(f.getID() == dateID || f.getID() == locusID || f.getID() == GLStringID){
@@ -127,28 +139,81 @@ public class HML_Main extends JFrame implements ActionListener{
             }
 
             //String label;
-            JLabel jl = new JLabel();
-            if(f.isRequiredField()){
-                jl.setText("*"+f.getFieldName() + " (" + f.getContainerBlock().getBlockName() + ")");
-                jl.setForeground(Color.RED);
 
-            }else{
-                jl.setText(f.getFieldName() + " (" + f.getContainerBlock().getBlockName() + ")");
-                jl.setForeground(Color.WHITE);
-            }
-
-            jl.setBounds(x-50,y,200,30);
             JTextField tf = new JTextField();
-            tf.setBounds(x,y+20,100,30);
-            y+=60;
-            if(y > windowHeight-50){
-                x += 200;
-                y = 0;
+
+            tf.setSize(125,30);
+
+
+            //Set locations for each text box
+            switch (f.getFieldName()){
+                case "version":
+                    tf.setLocation(410,58);
+                    break;
+                case "project-name":
+                    tf.setLocation(410,105);
+                    break;
+                case "root":
+                    tf.setLocation(107,192);
+                    break;
+                case "extension":
+                    tf.setLocation(107,238);
+                    break;
+                case "reporting-center-id":
+                    tf.setLocation(307,192);
+                    break;
+                case "reporting-center-context":
+                    tf.setLocation(307,238);
+                    break;
+                case "center-code":
+                    tf.setLocation(507,192);
+                    break;
+                case "test-id":
+                    tf.setLocation(707,192);
+                    break;
+                case "name":
+                    tf.setLocation(707,238);
+                    break;
+                case "gene-family":
+                    tf.setLocation(507,335);
+                    break;
+                case "uri":
+                    tf.setLocation(107,400);
+                    break;
+                case "format":
+                    tf.setLocation(107,445);
+                    break;
+                case "paired":
+                    tf.setLocation(107,494);
+                    break;
+                case "pooled":
+                    tf.setLocation(107,543);
+                    break;
+                case "availability":
+                    tf.setLocation(107,592);
+                    break;
+                case "test-id-source":
+                    tf.setLocation(307,440);
+                    break;
+                case "allele-db":
+                    tf.setLocation(707,370);
+                    break;
+                case "allele-version":
+                    tf.setLocation(707,430);
+
+                default:
+                    tf.setLocation(1000,1000);
+                    tf.setVisible(false);
+                    break;
             }
+            tf.setBackground(new Color(222,222,222));
+
+
             inputs.set(f.getID(),tf);
-            add(jl);
             add(tf);
 
+
+            //Set defaults for text boxes
             if(Objects.equals(f.getFieldName(), "gene-family")){
                 tf.setText("KIR");
             }else if(Objects.equals(f.getFieldName(), "allele-db")){
